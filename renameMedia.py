@@ -1,4 +1,4 @@
-import trie, pickle, os, re, sys
+import trie, pickle, os, re, sys, time
 
 movieListName = "movieNames.txt"
 movieTrieName = "moviesTrie.pickle"
@@ -149,6 +149,7 @@ def rename_media(processedMedia, directory):
         # otherwise append a number in parenthases and keep incrementing
         # untill the path is unused
         while True or appendNumber == 10:
+
             try:
                 if(appendNumber > 0):
                     os.stat(newFilePath + " ("+str(appendNumber)+")")
@@ -172,7 +173,28 @@ def rename_media(processedMedia, directory):
         except Exception as exception:
             failed.append([oldFilePath, newFilePath, exception])
 
+startTime = time.time()
+
+f = open("movieNames.txt")
+t = trie.Trie()
+
+for line in f:
     
+    l = normalize_movie_name(line)
+    t.insert(l, line)
+
+
+save_dictionary(t)
+endTime = time.time()
+
+print("total time taken = " + str(endTime - startTime))
+
+"""
+
+g = load_dictionary()
+    
+"""
+
 ##h = create_movies_dictionary("movieNames.txt")
 
 ##save_dictionary(h)
